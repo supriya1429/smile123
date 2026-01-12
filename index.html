@@ -1,253 +1,135 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Smile Page 😊</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-* {
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: linear-gradient(-45deg, #ffdee9, #b5fffc, #cdb4db, #ffc8dd);
-  background-size: 400% 400%;
-  animation: gradient 12s ease infinite;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-@keyframes gradient {
-  0% {background-position: 0% 50%;}
-  50% {background-position: 100% 50%;}
-  100% {background-position: 0% 50%;}
-}
-
-.card {
-  background: #fff;
-  padding: 30px;
-  width: 90%;
-  max-width: 420px;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-  text-align: center;
-  animation: fadeIn 1s ease;
-}
-
-@keyframes fadeIn {
-  from {opacity:0; transform: scale(0.95);}
-  to {opacity:1; transform: scale(1);}
-}
-
-button {
-  width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 14px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-top: 12px;
-  transition: all 0.3s ease;
-}
-
-button:hover { transform: scale(1.05); }
-
-.smile-btn { background: #ff4d6d; color: #fff; }
-.review-btn { background: #4dabf7; color: #fff; }
-
-.message {
-  margin-top: 20px;
-  padding: 18px;
-  background: #f8f9fa;
-  border-radius: 14px;
-  opacity: 0;
-  transform: scale(0.9);
-  transition: all 0.5s ease;
-}
-
-.message.show {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-}
-
-.modal-content {
-  background: #fff;
-  padding: 30px;
-  border-radius: 18px;
-  width: 90%;
-  max-width: 350px;
-  text-align: center;
-}
-
-input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 12px;
-  border: 1px solid #ccc;
-  margin-top: 10px;
-  font-size: 15px;
-}
-
-.confetti {
-  position: fixed;
-  width: 10px;
-  height: 10px;
-  top: -10px;
-  animation: fall 3s linear forwards;
-}
-
-@keyframes fall {
-  to {
-    transform: translateY(100vh) rotate(720deg);
-    opacity: 0;
-  }
-}
-</style>
-</head>
-
-<body>
-
-<!-- NAME POPUP -->
-<div class="modal" id="nameModal">
-  <div class="modal-content">
-    <h2>Hey there! 😄</h2>
-    <p>What’s your name?</p>
-    <input id="nameInput" placeholder="Your name looks good here 😄">
-    <button class="smile-btn" onclick="saveName()">Let’s go 😊</button>
-  </div>
-</div>
-
-<!-- MAIN CARD -->
-<div class="card">
-  <h1 id="headline">Ready for a Smile? 😊</h1>
-  <button class="smile-btn" onclick="makeSmile()">Make Me Smile 😊</button>
-  <div class="message" id="messageBox"></div>
-  <button class="review-btn" onclick="leaveReview()">⭐ Leave a Review</button>
-</div>
-
 <script>
-/* ---------- URL PARAMS ---------- */
-const params = new URLSearchParams(window.location.search);
-const businessName = params.get("business_name") || "Your Business";
-const businessType = params.get("business_type") || "Default";
-const reviewLink = params.get("review_link") || "#";
-
-document.getElementById("headline").innerText =
-  `Welcome to ${businessName} 💖`;
-
-let customerName = "";
-
-/* ---------- SAVE NAME ---------- */
-function saveName() {
-  customerName =
-    document.getElementById("nameInput").value.trim() || "Beautiful Human";
-  document.getElementById("nameModal").style.display = "none";
-}
-
 /* ---------- MASSIVE MESSAGE ENGINE ---------- */
+
+// 1️⃣ Greetings
 const greetings = [
   "Hey", "Hi", "Well hello", "Okay but listen",
   "Wait wait", "Guess what", "Oh hi there",
   "Just saying", "Between you and me", "Hey you"
 ];
 
+// 2️⃣ Name styles
+const nameStyles = name => [
+  name,
+  `dear ${name}`,
+  `${name} 💖`,
+  `${name}, listen`,
+  `${name} ✨`,
+  `my favorite ${name}`,
+  `${name} 😌`
+];
+
+// 3️⃣ Compliments
 const compliments = [
   "you just made our day brighter",
   "your vibe is honestly unmatched",
   "you walked in and everything felt better",
   "you’re effortlessly charming",
   "you have dangerously good energy",
-  "you’re way too likable",
+  "you’re the kind of customer we remember",
   "you make ordinary moments special",
   "you radiate good things",
+  "you’re way too likable",
   "you belong in our favorite memories"
 ];
 
+// 4️⃣ Emotional reactions
 const emotions = [
   "and we’re still smiling about it",
   "and honestly, we’re not over it",
+  "and now the place feels warmer",
   "and yeah… we noticed 😏",
-  "and that mattered",
+  "and that mattered more than you think",
   "and it shows",
-  "and it made a difference"
+  "and we appreciate that a lot",
+  "and it made a difference",
+  "and we’re glad you’re here"
 ];
 
+// 5️⃣ Business-specific lines
 const businessLines = {
   Restaurant: [
     "Hope every bite made you happy 🍽️",
     "Your taste? Impeccable.",
-    "You clearly know good food",
+    "You clearly know good food when you see it",
+    "We cooked — you approved 😌",
     "That meal suited you perfectly"
   ],
   Cafe: [
     "Hope your coffee loved you back ☕",
-    "You and caffeine? Perfect match",
-    "That cup chose you"
+    "That caffeine glow is real",
+    "You and good coffee? Perfect match",
+    "Your vibe pairs well with espresso",
+    "You chose wisely today"
   ],
   Salon: [
     "You’re officially glowing ✂️",
-    "That look? Dangerous 😏",
-    "Mirror definitely approved"
+    "That look? Dangerous.",
+    "You’re turning heads now, aren’t you",
+    "Mirror definitely approved",
+    "Confidence level just went up"
   ],
   Gym: [
     "That workout definitely counted 💪",
-    "Strong choice coming here today",
-    "Sweat never looked this good"
+    "Sweat never looked this good",
+    "You showed up — that’s power",
+    "Your future self says thanks",
+    "Strong choice coming here today"
   ],
   Default: [
     "We loved having you here",
     "You fit right in",
+    "You’re always welcome here",
+    "This place suits you",
     "Come back anytime"
   ]
 };
 
+// 6️⃣ Flirty closers
 const flirtyClosers = [
   "Not saying you’re our favorite… but 👀",
   "Careful, we might miss you already 😉",
   "Come back soon — we’ll pretend it’s casual",
-  "You left an impression 😌",
-  "Low-key hoping to see you again"
+  "Yeah… this was a good moment",
+  "You left an impression",
+  "We’d recognize your energy anywhere",
+  "Low-key hoping to see you again",
+  "This wasn’t just another visit 😌"
 ];
 
+// 7️⃣ Emojis
+const emojiTones = ["💖", "✨", "😌", "😉", "😍", "🌸", "🔥", "💫"];
+
+// 8️⃣ Bonus lines
 const bonusLines = [
   "Some moments just feel right — this was one.",
   "You turned a normal day into something better.",
+  "We hope your day keeps treating you this well.",
+  "Small visit, big smile.",
   "This energy? Please bring it back."
 ];
 
-const emojis = ["💖", "✨", "😌", "😉", "😍", "💫"];
-
+// ---------- HELPERS ----------
 function random(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-/* ---------- MAKE SMILE ---------- */
+// ---------- MAKE ME SMILE ----------
 function makeSmile() {
   const msgBox = document.getElementById("messageBox");
 
+  const styledName = random(nameStyles(customerName));
+  const bizLine =
+    random(businessLines[businessType] || businessLines.Default);
+
   let message = `
-${random(greetings)} ${customerName} ${random(emojis)}<br><br>
+${random(greetings)} ${styledName} ${random(emojiTones)}<br><br>
 ${random(compliments)}, ${random(emotions)}.<br>
-${random(businessLines[businessType] || businessLines.Default)}.<br>
+${bizLine}.<br>
 ${random(flirtyClosers)}
 `;
 
-  if (Math.random() > 0.5) {
+  if (Math.random() > 0.4) {
     message += `<br><br>${random(bonusLines)}`;
   }
 
@@ -255,27 +137,8 @@ ${random(flirtyClosers)}
   msgBox.classList.add("show");
   confetti();
 }
-
-/* ---------- REVIEW ---------- */
-function leaveReview() {
-  window.open(reviewLink, "_blank");
-}
-
-/* ---------- CONFETTI ---------- */
-function confetti() {
-  for (let i = 0; i < 40; i++) {
-    const c = document.createElement("div");
-    c.className = "confetti";
-    c.style.left = Math.random() * 100 + "vw";
-    c.style.background = `hsl(${Math.random()*360},100%,70%)`;
-    c.style.animationDuration = (2 + Math.random()) + "s";
-    document.body.appendChild(c);
-    setTimeout(() => c.remove(), 3000);
-  }
-}
 </script>
 
-</body>
-</html>
+
 
 
