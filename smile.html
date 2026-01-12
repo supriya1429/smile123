@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Smile Page 😊</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ---------- GLOBAL ---------- */
+* {
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(-45deg, #ffdee9, #b5fffc, #cdb4db, #ffc8dd);
+  background-size: 400% 400%;
+  animation: gradient 12s ease infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes gradient {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+/* ---------- CARD ---------- */
+.card {
+  background: #fff;
+  padding: 30px;
+  width: 90%;
+  max-width: 420px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  text-align: center;
+  animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+  from {opacity:0; transform: scale(0.95);}
+  to {opacity:1; transform: scale(1);}
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+.smile-btn {
+  background: #ff4d6d;
+  color: #fff;
+}
+
+.review-btn {
+  background: #4dabf7;
+  color: #fff;
+}
+
+.message {
+  margin-top: 20px;
+  padding: 18px;
+  background: #f8f9fa;
+  border-radius: 14px;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 0.5s ease;
+}
+
+.message.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ---------- MODAL ---------- */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 30px;
+  border-radius: 18px;
+  width: 90%;
+  max-width: 350px;
+  text-align: center;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+/* ---------- CONFETTI ---------- */
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  top: -10px;
+  animation: fall 3s linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAME POPUP -->
+<div class="modal" id="nameModal">
+  <div class="modal-content">
+    <h2>Hey there! 😄</h2>
+    <p>What’s your name?</p>
+    <input id="nameInput" placeholder="Your name looks good here 😄">
+    <button class="smile-btn" onclick="saveName()">Let’s go 😊</button>
+  </div>
+</div>
+
+<!-- MAIN CARD -->
+<div class="card">
+  <h1 id="headline">Ready for a Smile? 😊</h1>
+  <button class="smile-btn" onclick="makeSmile()">Make Me Smile 😊</button>
+  <div class="message" id="messageBox"></div>
+  <button class="review-btn" onclick="leaveReview()">⭐ Leave a Review</button>
+</div>
+
+<script>
+/* ---------- URL PARAMS ---------- */
+const params = new URLSearchParams(window.location.search);
+const businessName = params.get("business_name") || "Your Business";
+const businessType = params.get("business_type") || "Business";
+const reviewLink = params.get("review_link") || "#";
+
+document.getElementById("headline").innerText =
+  `Welcome to ${businessName} 💖`;
+
+/* ---------- NAME ---------- */
+let customerName = "";
+
+function saveName() {
+  const val = document.getElementById("nameInput").value.trim();
+  customerName = val || "Beautiful Human";
+  document.getElementById("nameModal").style.display = "none";
+}
+
+/* ---------- MESSAGES ---------- */
+const baseLines = [
+  "you just made our day brighter",
+  "someone like you belongs in our favorite memories",
+  "the room feels happier because of you",
+  "we’re still smiling thinking about you",
+  "you have dangerously good vibes"
+];
+
+const flirtyLines = [
+  "If smiles were currency, you'd be rich by now 😌",
+  "Careful… you might become our favorite customer 😉",
+  "Not gonna lie — you look amazing today 😍",
+  "We’d remember you even in a crowd ✨"
+];
+
+const businessLines = {
+  Restaurant: [
+    "Hope every bite tasted like happiness 🍽️",
+    "Your taste? Elite 👌"
+  ],
+  Cafe: [
+    "Hope your coffee loved you back ☕",
+    "You + caffeine = perfection"
+  ],
+  Salon: [
+    "You’re officially glowing ✂️",
+    "That look? Absolutely dangerous 😏"
+  ],
+  Gym: [
+    "That workout definitely counted 💪",
+    "Sweat never looked this good"
+  ]
+};
+
+/* ---------- SMILE ---------- */
+function makeSmile() {
+  const msgBox = document.getElementById("messageBox");
+
+  const message = `
+Hey ${customerName} 💫<br><br>
+${random(baseLines)}.<br>
+${random(businessLines[businessType] || ["We loved having you here 💕"])}<br>
+${random(flirtyLines)}
+`;
+
+  msgBox.innerHTML = message;
+  msgBox.classList.add("show");
+  confetti();
+}
+
+/* ---------- HELPERS ---------- */
+function random(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function leaveReview() {
+  window.open(reviewLink, "_blank");
+}
+
+/* ---------- CONFETTI ---------- */
+function confetti() {
+  for (let i = 0; i < 40; i++) {
+    const c = document.createElement("div");
+    c.className = "confetti";
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.background =
+      `hsl(${Math.random() * 360}, 100%, 70%)`;
+    c.style.animationDuration = (2 + Math.random()) + "s";
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 3000);
+  }
+}
+</script>
+
+</body>
+</html>
