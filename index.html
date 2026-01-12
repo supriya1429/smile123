@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-/* ---------- GLOBAL ---------- */
 * {
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
@@ -29,7 +28,6 @@ body {
   100% {background-position: 0% 50%;}
 }
 
-/* ---------- CARD ---------- */
 .card {
   background: #fff;
   padding: 30px;
@@ -46,10 +44,6 @@ body {
   to {opacity:1; transform: scale(1);}
 }
 
-h1 {
-  margin-bottom: 10px;
-}
-
 button {
   width: 100%;
   padding: 14px;
@@ -61,19 +55,10 @@ button {
   transition: all 0.3s ease;
 }
 
-button:hover {
-  transform: scale(1.05);
-}
+button:hover { transform: scale(1.05); }
 
-.smile-btn {
-  background: #ff4d6d;
-  color: #fff;
-}
-
-.review-btn {
-  background: #4dabf7;
-  color: #fff;
-}
+.smile-btn { background: #ff4d6d; color: #fff; }
+.review-btn { background: #4dabf7; color: #fff; }
 
 .message {
   margin-top: 20px;
@@ -90,7 +75,6 @@ button:hover {
   transform: scale(1);
 }
 
-/* ---------- MODAL ---------- */
 .modal {
   position: fixed;
   inset: 0;
@@ -119,7 +103,6 @@ input {
   font-size: 15px;
 }
 
-/* ---------- CONFETTI ---------- */
 .confetti {
   position: fixed;
   width: 10px;
@@ -161,77 +144,119 @@ input {
 /* ---------- URL PARAMS ---------- */
 const params = new URLSearchParams(window.location.search);
 const businessName = params.get("business_name") || "Your Business";
-const businessType = params.get("business_type") || "Business";
+const businessType = params.get("business_type") || "Default";
 const reviewLink = params.get("review_link") || "#";
 
 document.getElementById("headline").innerText =
   `Welcome to ${businessName} 💖`;
 
-/* ---------- NAME ---------- */
 let customerName = "";
 
+/* ---------- SAVE NAME ---------- */
 function saveName() {
-  const val = document.getElementById("nameInput").value.trim();
-  customerName = val || "Beautiful Human";
+  customerName =
+    document.getElementById("nameInput").value.trim() || "Beautiful Human";
   document.getElementById("nameModal").style.display = "none";
 }
 
-/* ---------- MESSAGES ---------- */
-const baseLines = [
-  "you just made our day brighter",
-  "someone like you belongs in our favorite memories",
-  "the room feels happier because of you",
-  "we’re still smiling thinking about you",
-  "you have dangerously good vibes"
+/* ---------- MASSIVE MESSAGE ENGINE ---------- */
+const greetings = [
+  "Hey", "Hi", "Well hello", "Okay but listen",
+  "Wait wait", "Guess what", "Oh hi there",
+  "Just saying", "Between you and me", "Hey you"
 ];
 
-const flirtyLines = [
-  "If smiles were currency, you'd be rich by now 😌",
-  "Careful… you might become our favorite customer 😉",
-  "Not gonna lie — you look amazing today 😍",
-  "We’d remember you even in a crowd ✨"
+const compliments = [
+  "you just made our day brighter",
+  "your vibe is honestly unmatched",
+  "you walked in and everything felt better",
+  "you’re effortlessly charming",
+  "you have dangerously good energy",
+  "you’re way too likable",
+  "you make ordinary moments special",
+  "you radiate good things",
+  "you belong in our favorite memories"
+];
+
+const emotions = [
+  "and we’re still smiling about it",
+  "and honestly, we’re not over it",
+  "and yeah… we noticed 😏",
+  "and that mattered",
+  "and it shows",
+  "and it made a difference"
 ];
 
 const businessLines = {
   Restaurant: [
-    "Hope every bite tasted like happiness 🍽️",
-    "Your taste? Elite 👌"
+    "Hope every bite made you happy 🍽️",
+    "Your taste? Impeccable.",
+    "You clearly know good food",
+    "That meal suited you perfectly"
   ],
   Cafe: [
     "Hope your coffee loved you back ☕",
-    "You + caffeine = perfection"
+    "You and caffeine? Perfect match",
+    "That cup chose you"
   ],
   Salon: [
     "You’re officially glowing ✂️",
-    "That look? Absolutely dangerous 😏"
+    "That look? Dangerous 😏",
+    "Mirror definitely approved"
   ],
   Gym: [
     "That workout definitely counted 💪",
+    "Strong choice coming here today",
     "Sweat never looked this good"
+  ],
+  Default: [
+    "We loved having you here",
+    "You fit right in",
+    "Come back anytime"
   ]
 };
 
-/* ---------- SMILE ---------- */
+const flirtyClosers = [
+  "Not saying you’re our favorite… but 👀",
+  "Careful, we might miss you already 😉",
+  "Come back soon — we’ll pretend it’s casual",
+  "You left an impression 😌",
+  "Low-key hoping to see you again"
+];
+
+const bonusLines = [
+  "Some moments just feel right — this was one.",
+  "You turned a normal day into something better.",
+  "This energy? Please bring it back."
+];
+
+const emojis = ["💖", "✨", "😌", "😉", "😍", "💫"];
+
+function random(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+/* ---------- MAKE SMILE ---------- */
 function makeSmile() {
   const msgBox = document.getElementById("messageBox");
 
-  const message = `
-Hey ${customerName} 💫<br><br>
-${random(baseLines)}.<br>
-${random(businessLines[businessType] || ["We loved having you here 💕"])}<br>
-${random(flirtyLines)}
+  let message = `
+${random(greetings)} ${customerName} ${random(emojis)}<br><br>
+${random(compliments)}, ${random(emotions)}.<br>
+${random(businessLines[businessType] || businessLines.Default)}.<br>
+${random(flirtyClosers)}
 `;
+
+  if (Math.random() > 0.5) {
+    message += `<br><br>${random(bonusLines)}`;
+  }
 
   msgBox.innerHTML = message;
   msgBox.classList.add("show");
   confetti();
 }
 
-/* ---------- HELPERS ---------- */
-function random(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-
+/* ---------- REVIEW ---------- */
 function leaveReview() {
   window.open(reviewLink, "_blank");
 }
@@ -242,8 +267,7 @@ function confetti() {
     const c = document.createElement("div");
     c.className = "confetti";
     c.style.left = Math.random() * 100 + "vw";
-    c.style.background =
-      `hsl(${Math.random() * 360}, 100%, 70%)`;
+    c.style.background = `hsl(${Math.random()*360},100%,70%)`;
     c.style.animationDuration = (2 + Math.random()) + "s";
     document.body.appendChild(c);
     setTimeout(() => c.remove(), 3000);
@@ -253,3 +277,5 @@ function confetti() {
 
 </body>
 </html>
+
+
