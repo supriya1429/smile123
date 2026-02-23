@@ -1,238 +1,272 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Smile Page 😊</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hasti Restaurant Special Message</title>
 
 <style>
-/* ---------- GLOBAL ---------- */
-* {
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(135deg,#ff758c,#ff7eb3);
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
 }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: linear-gradient(-45deg, #ffdee9, #b5fffc, #cdb4db, #ffc8dd);
-  background-size: 400% 400%;
-  animation: gradient 12s ease infinite;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* FULL BACKGROUND HEARTS */
+.hearts{
+  position:absolute;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  z-index:0;
+}
+.heart{
+  position:absolute;
+  bottom:-20px;
+  font-size:22px;
+  animation:float 6s linear infinite;
+  opacity:0.7;
+}
+@keyframes float{
+  0%{transform:translateY(0) scale(1);opacity:0.8;}
+  100%{transform:translateY(-110vh) scale(1.6);opacity:0;}
 }
 
-@keyframes gradient {
-  0% {background-position: 0% 50%;}
-  50% {background-position: 100% 50%;}
-  100% {background-position: 0% 50%;}
+/* CARD */
+.card{
+  background:rgba(255,255,255,0.95);
+  backdrop-filter:blur(10px);
+  padding:35px;
+  width:420px;
+  border-radius:25px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.25);
+  text-align:center;
+  z-index:2;
+  position:relative;
+  animation:fadeIn 1s ease;
 }
 
-/* ---------- CARD ---------- */
-.card {
-  background: #fff;
-  padding: 30px;
-  width: 90%;
-  max-width: 420px;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-  text-align: center;
-  animation: fadeIn 1s ease;
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
 }
 
-@keyframes fadeIn {
-  from {opacity:0; transform: scale(0.95);}
-  to {opacity:1; transform: scale(1);}
+.card h2{
+  margin-top:0;
+  color:#ff4d6d;
+  font-size:26px;
 }
 
-h1 {
-  margin-bottom: 10px;
+.mainBtn{
+  padding:12px 22px;
+  border:none;
+  border-radius:30px;
+  margin-top:15px;
+  cursor:pointer;
+  background:linear-gradient(45deg,#ff4d6d,#ff758c);
+  color:white;
+  font-weight:bold;
+  font-size:15px;
+  transition:0.3s;
+}
+.mainBtn:hover{
+  transform:scale(1.08);
+  box-shadow:0 8px 20px rgba(0,0,0,0.2);
 }
 
-button {
-  width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 14px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-top: 12px;
-  transition: all 0.3s ease;
+.reviewBtn{
+  padding:10px 20px;
+  border:none;
+  border-radius:25px;
+  margin-top:20px;
+  cursor:pointer;
+  background:#34a853;
+  color:white;
+  font-weight:bold;
+  display:none;
+  transition:0.3s;
+}
+.reviewBtn:hover{
+  transform:scale(1.05);
+  box-shadow:0 8px 20px rgba(0,0,0,0.2);
 }
 
-button:hover {
-  transform: scale(1.05);
+#messageBox{
+  margin-top:25px;
+  min-height:140px;
+  font-size:16px;
+  white-space:pre-line;
+  color:#333;
 }
 
-.smile-btn {
-  background: #ff4d6d;
-  color: #fff;
+/* POPUP */
+.popup{
+  position:absolute;
+  background:white;
+  padding:25px;
+  border-radius:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.25);
+  z-index:3;
+  text-align:center;
 }
 
-.review-btn {
-  background: #4dabf7;
-  color: #fff;
-}
-
-.message {
-  margin-top: 20px;
-  padding: 18px;
-  background: #f8f9fa;
-  border-radius: 14px;
-  opacity: 0;
-  transform: scale(0.9);
-  transition: all 0.5s ease;
-}
-
-.message.show {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* ---------- MODAL ---------- */
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-}
-
-.modal-content {
-  background: #fff;
-  padding: 30px;
-  border-radius: 18px;
-  width: 90%;
-  max-width: 350px;
-  text-align: center;
-}
-
-input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 12px;
-  border: 1px solid #ccc;
-  margin-top: 10px;
-  font-size: 15px;
-}
-
-/* ---------- CONFETTI ---------- */
-.confetti {
-  position: fixed;
-  width: 10px;
-  height: 10px;
-  top: -10px;
-  animation: fall 3s linear forwards;
-}
-
-@keyframes fall {
-  to {
-    transform: translateY(100vh) rotate(720deg);
-    opacity: 0;
-  }
+input{
+  padding:10px;
+  border-radius:12px;
+  border:1px solid #ccc;
+  width:80%;
 }
 </style>
 </head>
 
 <body>
 
-<!-- NAME POPUP -->
-<div class="modal" id="nameModal">
-  <div class="modal-content">
-    <h2>Hey there! 😄</h2>
-    <p>What’s your name?</p>
-    <input id="nameInput" placeholder="Your name looks good here 😄">
-    <button class="smile-btn" onclick="saveName()">Let’s go 😊</button>
-  </div>
+<div class="hearts" id="hearts"></div>
+
+<div class="card">
+  <h2>Hasti Restaurant 💖</h2>
+  <button class="mainBtn" onclick="makeSmile()">Generate Special Message</button>
+
+  <div id="messageBox"></div>
+
+  <button class="reviewBtn" id="reviewBtn" onclick="leaveReview()">
+    Leave Us a Review ⭐
+  </button>
 </div>
 
-<!-- MAIN CARD -->
-<div class="card">
-  <h1 id="headline">Ready for a Smile? 😊</h1>
-  <button class="smile-btn" onclick="makeSmile()">Make Me Smile 😊</button>
-  <div class="message" id="messageBox"></div>
-  <button class="review-btn" onclick="leaveReview()">⭐ Leave a Review</button>
+<div class="popup" id="namePopup">
+  <h3>Hey there, what’s your name? 😊</h3>
+  <input type="text" id="nameInput" placeholder="Enter your name">
+  <br><br>
+  <button class="mainBtn" onclick="saveName()">Continue</button>
 </div>
 
 <script>
-/* ---------- URL PARAMS ---------- */
-const params = new URLSearchParams(window.location.search);
-const businessName = params.get("business_name") || "Your Business";
-const businessType = params.get("business_type") || "Business";
-const reviewLink = params.get("review_link") || "#";
 
-document.getElementById("headline").innerText =
-  `Welcome to ${businessName} 💖`;
-
-/* ---------- CUSTOMER NAME ---------- */
-let customerName = "";
-
-function saveName() {
-  const val = document.getElementById("nameInput").value.trim();
-  customerName = val || "Beautiful Human";
-  document.getElementById("nameModal").style.display = "none";
+/* HEARTS */
+for(let i=0;i<40;i++){
+  let heart=document.createElement("div");
+  heart.className="heart";
+  heart.innerHTML="❤️";
+  heart.style.left=Math.random()*100+"%";
+  heart.style.animationDuration=(4+Math.random()*4)+"s";
+  document.getElementById("hearts").appendChild(heart);
 }
 
-/* ---------- MASSIVE MESSAGE ENGINE ---------- */
-const greetings = ["Hey", "Hi", "Well hello", "Okay but listen", "Wait wait", "Guess what", "Oh hi there", "Just saying", "Between you and me", "Hey you"];
-const nameStyles = name => [name, `dear ${name}`, `${name} 💖`, `${name}, listen`, `${name} ✨`, `my favorite ${name}`, `${name} 😌`];
-const compliments = ["you just made our day brighter","your vibe is honestly unmatched","you walked in and everything felt better","you’re effortlessly charming","you have dangerously good energy","you’re the kind of customer we remember","you make ordinary moments special","you radiate good things","you’re way too likable","you belong in our favorite memories"];
-const emotions = ["and we’re still smiling about it","and honestly, we’re not over it","and now the place feels warmer","and yeah… we noticed 😏","and that mattered more than you think","and it shows","and we appreciate that a lot","and it made a difference","and we’re glad you’re here"];
-const businessLines = {
-  Restaurant: ["Hope every bite made you happy 🍽️","Your taste? Impeccable.","You clearly know good food when you see it","We cooked — you approved 😌","That meal suited you perfectly"],
-  Cafe: ["Hope your coffee loved you back ☕","That caffeine glow is real","You and good coffee? Perfect match","Your vibe pairs well with espresso","You chose wisely today"],
-  Salon: ["You’re officially glowing ✂️","That look? Dangerous.","You’re turning heads now, aren’t you","Mirror definitely approved","Confidence level just went up"],
-  Gym: ["That workout definitely counted 💪","Sweat never looked this good","You showed up — that’s power","Your future self says thanks","Strong choice coming here today"],
-  Default: ["We loved having you here","You fit right in","You’re always welcome here","This place suits you","Come back anytime"]
-};
-const flirtyClosers = ["Not saying you’re our favorite… but 👀","Careful, we might miss you already 😉","Come back soon — we’ll pretend it’s casual","Yeah… this was a good moment","You left an impression","We’d recognize your energy anywhere","Low-key hoping to see you again","This wasn’t just another visit 😌"];
-const emojiTones = ["💖","✨","😌","😉","😍","🌸","🔥","💫"];
-const bonusLines = ["Some moments just feel right — this was one.","You turned a normal day into something better.","We hope your day keeps treating you this well.","Small visit, big smile.","This energy? Please bring it back."];
+let customerName="";
 
-function random(arr){return arr[Math.floor(Math.random()*arr.length)];}
-
-/* ---------- MAKE ME SMILE ---------- */
-function makeSmile() {
-  if(!customerName){
-    alert("Please enter your name first! 😄");
+function saveName(){
+  const name=document.getElementById("nameInput").value.trim();
+  if(name===""){
+    alert("Please enter your name 😊");
     return;
   }
-  const msgBox = document.getElementById("messageBox");
-  const styledName = random(nameStyles(customerName));
-  const bizLine = random(businessLines[businessType] || businessLines.Default);
-
-  let message = `
-${random(greetings)} ${styledName} ${random(emojiTones)}<br><br>
-${random(compliments)}, ${random(emotions)}.<br>
-${bizLine}.<br>
-${random(flirtyClosers)}
-${Math.random()>0.4?`<br><br>${random(bonusLines)}`:""}
-  `;
-  msgBox.innerHTML = message;
-  msgBox.classList.add("show");
-  confetti();
+  customerName=name;
+  document.getElementById("namePopup").style.display="none";
 }
 
-/* ---------- LEAVE REVIEW ---------- */
-function leaveReview(){window.open(reviewLink,"_blank");}
+/* LARGE ENGINE POOLS */
 
-/* ---------- CONFETTI ---------- */
-function confetti(){
-  for(let i=0;i<40;i++){
-    const c=document.createElement("div");
-    c.className="confetti";
-    c.style.left=Math.random()*100+"vw";
-    c.style.background=`hsl(${Math.random()*360},100%,70%)`;
-    c.style.animationDuration=(2+Math.random())+"s";
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(),3000);
+function buildPool(base, count){
+  let arr=[];
+  for(let i=0;i<count;i++){
+    arr.push(base[i % base.length]);
   }
+  return arr;
+}
+const greetings = buildPool([
+"Hey","Hello","Well hello","Look who’s here","Guess what",
+"Hi superstar","Welcome back","Hey legend","Oh wow",
+"There you are"
+],60);
+
+const appreciation = buildPool([
+"you truly brightened our entire restaurant",
+"your presence made everything feel warmer",
+"your smile changed the atmosphere instantly",
+"you brought beautiful energy with you",
+"you made our team genuinely happy",
+"you left a lovely impression",
+"your vibe was unforgettable",
+"you turned a simple meal into something special"
+],60);
+
+const emotions = buildPool([
+"and we loved every second of serving you",
+"and it honestly meant a lot to us",
+"and the team is still smiling",
+"and it made our day better",
+"and we felt proud hosting you",
+"and it did not go unnoticed"
+],60);
+
+const foodLines = buildPool([
+"Every bite looked perfectly chosen",
+"Your food selection was elite level",
+"Our kitchen enjoyed preparing your order",
+"Your table had the best energy",
+"We loved hosting your visit"
+],40);
+
+const flirty = buildPool([
+"Careful… we might start missing you already 😉",
+"You and this place? Perfect combination",
+"Come back soon before we start counting days",
+"You left a mark here",
+"We will remember this visit"
+],40);
+
+const closers = buildPool([
+"Moments like this stay with us",
+"Some visits feel magical",
+"You made today different",
+"This was more than just a meal",
+"That visit meant something special"
+],40);
+
+function random(arr){
+  return arr[Math.floor(Math.random()*arr.length)];
+}
+
+function makeSmile(){
+  if(!customerName){
+    alert("Please enter your name first 😊");
+    return;
+  }
+
+  const message=`${random(greetings)} ${customerName} ✨
+
+${random(appreciation)}, ${random(emotions)}.
+${random(foodLines)}.
+${random(flirty)}.
+
+${random(closers)}.`;
+
+  typeEffect(document.getElementById("messageBox"),message,18);
+  document.getElementById("reviewBtn").style.display="inline-block";
+}
+
+function typeEffect(element,text,speed){
+  element.innerHTML="";
+  let i=0;
+  function typing(){
+    if(i<text.length){
+      element.innerHTML+=text.charAt(i);
+      i++;
+      setTimeout(typing,speed);
+    }
+  }
+  typing();
+}
+
+function leaveReview(){
+  window.open("https://www.google.com/search?sca_esv=a8424e5f7dad53ec&sxsrf=ANbL-n7uQErRKAkoa-uptiyP2eL46EbKGQ:1771832828883&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOeSGkAVRP9abJ6avbgyAwBeQ29_Of0y7iVato0-YXzAb5K5R-FUk76Auxlp38j_1pR6H4DE0IpL_ZODEMICcjenRcRRNqSlk2qmgVtZAcgbYA1dI3gTCvlZXm3fAwqRNP0Ui-9s%3D&q=Hasti+Vegetarian+Cuisine+-+Manikonda+Reviews&sa=X&ved=2ahUKEwi3wffSj--SAxWurpUCHRDaD_wQ0bkNegQIJhAF&biw=1536&bih=695&dpr=1.25#lrd=0x3bcb97bdcd920f8f:0xb05c76953f638c2c,3,,,,","_blank");
 }
 </script>
-
 </body>
 </html>
 
